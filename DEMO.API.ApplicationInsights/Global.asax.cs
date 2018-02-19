@@ -22,9 +22,9 @@ namespace DEMO.API.ApplicationInsights
 			if (requestTelemetry?.Context?.Cloud == null) return;
 			requestTelemetry.Context.Cloud.RoleName = WebConfigurationManager.AppSettings.Get("AppInsights-CloudRoleName");
 
-			telemetry.Context.User.Id = HttpContext.Current.User.Identity.GetUserId();
+			telemetry.Context.User.Id = HttpContext.Current.User.Identity.GetUserName(); //HttpContext.Current.User.Identity.GetUserId();
 			telemetry.Context.User.AuthenticatedUserId = HttpContext.Current.User.Identity.GetUserName();
-			telemetry.Context.Session.Id = HttpContext.Current.User.Identity.GetUserId();
+			telemetry.Context.Session.Id = HttpContext.Current.User.Identity.GetUserName(); //HttpContext.Current.User.Identity.GetUserId();
 			telemetry.Context.Properties.Add("Tenant", "CFE");
 
 		}
