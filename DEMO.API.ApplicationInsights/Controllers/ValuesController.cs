@@ -2,6 +2,7 @@
 using DEMO.API.ApplicationInsights.ErrorHandler;
 using DEMO.API.ApplicationInsights.Models;
 using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace DEMO.API.ApplicationInsights.Controllers
 		{
 			_context = new ApplicationDbContext();
 			_telemetry = new TelemetryClient();
+
+			_telemetry.Context.Properties.Add("TENANT", "CFE");
 		}
 
         // GET api/values
@@ -74,6 +77,8 @@ namespace DEMO.API.ApplicationInsights.Controllers
 
 					_context.SaveChanges();
 
+					_telemetry.TrackEvent("MarcaAgregada");
+
 					return Ok(new { success = true, marcaAgregada = marca });
 				}
 				catch (Exception)
@@ -98,6 +103,8 @@ namespace DEMO.API.ApplicationInsights.Controllers
 					var submarca = _context.VehiculoSubmarcas.Add(datos);
 
 					_context.SaveChanges();
+
+					_telemetry.TrackEvent("SubmarcaAgregada");
 
 					return Ok(new { success = true, SubmarcaAgregada = submarca });
 				}
@@ -132,6 +139,8 @@ namespace DEMO.API.ApplicationInsights.Controllers
 					var final = DateTime.Now;
 
 					Trace.TraceInformation($"Termino de obtener [{marcas.Count}] marcas en un tiempo de {(final - inicio).TotalSeconds} sec / {(final - inicio).TotalMilliseconds} milliseconds | Fin [{final}]");
+
+					_telemetry.TrackEvent("MarcasConsultadas");
 
 					return Ok(marcas);
 				}
@@ -194,6 +203,8 @@ namespace DEMO.API.ApplicationInsights.Controllers
 
 					// Send the event:
 					_telemetry.TrackEvent("Submarcas de Vehiculos", properties, metrics);
+
+					_telemetry.TrackEvent("SubmarcasConsultadas");
 
 					return Ok(submarcas);
 				}

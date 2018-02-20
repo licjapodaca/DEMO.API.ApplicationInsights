@@ -25,7 +25,6 @@ namespace DEMO.API.ApplicationInsights
 			telemetry.Context.User.Id = HttpContext.Current.User.Identity.GetUserName(); //HttpContext.Current.User.Identity.GetUserId();
 			telemetry.Context.User.AuthenticatedUserId = HttpContext.Current.User.Identity.GetUserName();
 			telemetry.Context.Session.Id = HttpContext.Current.User.Identity.GetUserName(); //HttpContext.Current.User.Identity.GetUserId();
-			telemetry.Context.Properties.Add("Tenant", "CFE");
 
 		}
 	}
