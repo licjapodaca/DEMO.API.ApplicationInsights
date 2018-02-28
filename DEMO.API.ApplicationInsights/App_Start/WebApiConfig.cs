@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.ExceptionHandling;
 using DEMO.API.ApplicationInsights.ErrorHandler;
 using Microsoft.Owin.Security.OAuth;
@@ -19,8 +20,15 @@ namespace DEMO.API.ApplicationInsights
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
-            // Web API routes
-            config.MapHttpAttributeRoutes();
+			#region Activando CORS de manera Global (Para todos los Controllers Web API)
+
+			var cors = new EnableCorsAttribute(origins: "*", headers: "*", methods: "*");
+			config.EnableCors(cors);
+
+			#endregion
+
+			// Web API routes
+			config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
